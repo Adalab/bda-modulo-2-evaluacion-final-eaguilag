@@ -318,8 +318,35 @@ ON film_category.category_id = categories_not_horror.category_id;
 /* BONUS: Encuentra el título de las películas que son comedias y
 tienen una duración mayor a 180 minutos en la tabla film. */
 
+SELECT film.title
+FROM film
+JOIN film_category
+ON film_category.film_id = film.film_id
+JOIN category
+ON film_category.category_id = category.category_id
+WHERE length > 180
+AND category.name = 'Comedy';
+
 -- 25.
 /* BONUS: Encuentra todos los actores que han actuado juntos en al menos una película.
 La consulta debe mostrar el nombre y apellido de los actores y el número de películas
 en las que han actuado juntos. */
 
+# table actor -> first_name, last_name, actor_id
+# table film_actor -> actor_id, film_id
+
+SELECT a1.first_name AS actor1_first_name,
+a1.last_name AS actor1_last_name,
+a2.first_name AS actor2_first_name,
+a2.last_name AS actor2_last_name,
+COUNT(fa1.film_id) AS shared_films
+FROM film_actor AS fa1
+JOIN film_actor AS fa2
+ON fa1.film_id = fa2.film_id
+AND fa1.actor_id < fa2.actor_id
+JOIN actor AS a1
+ON fa1.actor_id = a1.actor_id
+JOIN actor AS a2
+ON fa2.actor_id = a2.actor_id
+GROUP BY a1.actor_id, a2.actor_id
+HAVING COUNT(fa1.film_id) > 0;
