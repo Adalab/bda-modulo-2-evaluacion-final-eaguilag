@@ -108,7 +108,7 @@ customer.first_name,
 customer.last_name,
 COUNT(rental.rental_id) AS rented_films
 FROM customer
-LEFT JOIN rental
+LEFT JOIN rental -- LEFT JOIN en caso de que no haya alquilado ninguna? o INNER JOIN?
 ON customer.customer_id = rental.customer_id
 GROUP BY customer.customer_id,
 customer.first_name,
@@ -173,36 +173,144 @@ WHERE description REGEXP 'cat|dog';
 -- 15.
 /* Hay algún actor o actriz que no apareca en ninguna película en la tabla film_actor. */
 
+SELECT actor.first_name,
+actor.last_name
+FROM actor
+WHERE actor.actor_id NOT IN(
+	SELECT actor_id
+    FROM film_actor);
+-- 0 rows returned -> No hay ningún actor/actriz que no esté en la tabla film_actor
+
 -- 16.
 /* Encuentra el título de todas las películas que fueron lanzadas entre el año 2005 y 2010. */
+
+SELECT DISTINCT title
+FROM film
+WHERE release_year BETWEEN 2005 AND 2010;
+-- 1000 rows returned
+-- Todas las peliculas son de 2006
 
 -- 17.
 /* Encuentra el título de todas las películas que son de la misma categoría que "Family". */
 
+SELECT DISTINCT title
+FROM film
+JOIN film_category
+ON film.film_id = film_category.film_id
+JOIN category
+ON film_category.category_id = category.category_id
+WHERE category.name = 'Family';
+-- 69 rows returned
+
 -- 18.
 /* Muestra el nombre y apellido de los actores que aparecen en más de 10 películas. */
+
+SELECT DISTINCT actor.first_name,
+actor.last_name
+FROM actor
+JOIN film_actor
+ON actor.actor_id = film_actor.actor_id
+GROUP BY actor.actor_id
+HAVING COUNT(film_actor.film_id) > 10
+ORDER BY actor.last_name;
+-- 199 rows returned
+
+-- o mediante subconsulta
+SELECT DISTINCT actor.first_name,
+actor.last_name
+FROM actor
+JOIN (SELECT actor_id
+    FROM film_actor
+    GROUP BY actor_id
+    HAVING COUNT(film_id) > 10
+) AS actors_min_11_films
+ON actor.actor_id = actors_min_11_films.actor_id
+ORDER BY actor.last_name;
 
 -- 19.
 /* Encuentra el título de todas las películas que son "R" y
 tienen una duración mayor a 2 horas en la tabla film. */
 
+SELECT title
+FROM film
+WHERE rating = 'R'
+AND length > 2;
+-- 195 rows returned
+
 -- 20.
 /* Encuentra las categorías de películas que tienen un promedio de duración superior
 a 120 minutos y muestra el nombre de la categoría junto con el promedio de duración. */
 
+SELECT category.name,
+AVG(film.length) AS avg_length
+FROM category
+JOIN film_category
+ON category.category_id = film_category.category_id
+JOIN film
+ON film_category.film_id = film.film_id
+GROUP BY category.name
+HAVING avg_length > 120;
+-- 4 rows returned
+
 -- 21.
 /* Encuentra los actores que han actuado en al menos 5 películas y muestra
 el nombre del actor junto con la cantidad de películas en las que han actuado. */
+
+SELECT DISTINCT actor.first_name,
+actor.last_name,
+COUNT(film_actor.film_id) AS num_films
+FROM actor
+JOIN film_actor
+ON film_actor.actor_id = actor.actor_id
+GROUP BY actor.first_name,
+actor.last_name
+HAVING num_films >= 5
+ORDER BY actor.last_name;
+-- 199 rows returned
 
 -- 22.
 /* Encuentra el título de todas las películas que fueron alquiladas por más de 5 días.
 Utiliza una subconsulta para encontrar los rental_ids con una duración superior a 5 días
 y luego selecciona las películas correspondientes. */
 
+SELECT DISTINCT film.title
+FROM film
+JOIN inventory
+ON film.film_id = inventory.film_id
+JOIN (
+    SELECT inventory_id -- aquí no es necesario el rental_id como se indica en el enunciado
+    FROM rental
+    WHERE DATEDIFF(return_date, rental_date) > 5
+) AS rental_5_days
+ON inventory.inventory_id = rental_5_days.inventory_id;
+
+-- Sin subconsulta
+SELECT DISTINCT film.title
+FROM film
+JOIN inventory
+ON film.film_id = inventory.film_id
+JOIN rental
+ON inventory.inventory_id = rental.inventory_id
+WHERE DATEDIFF(return_date, rental_date) > 5;
+
 -- 23.
 /* Encuentra el nombre y apellido de los actores que no han actuado en ninguna película de
 la categoría "Horror". Utiliza una subconsulta para encontrar los actores que han actuado
 en películas de la categoría "Horror" y luego exclúyelos de la lista de actores. */
+
+SELECT actor.first_name,
+actor.last_name
+FROM actor
+JOIN film_actor
+ON actor.actor_id = film_actor.actor_id
+JOIN film_category
+ON film_actor.film_id = film_category.film_id
+JOIN (
+	SELECT category_id
+    FROM category
+    WHERE name <> 'Horror'
+    ) AS categories_not_horror
+ON film_category.category_id = categories_not_horror.category_id;
 
 -- BONUS
 
@@ -214,3 +322,4 @@ tienen una duración mayor a 180 minutos en la tabla film. */
 /* BONUS: Encuentra todos los actores que han actuado juntos en al menos una película.
 La consulta debe mostrar el nombre y apellido de los actores y el número de películas
 en las que han actuado juntos. */
+
