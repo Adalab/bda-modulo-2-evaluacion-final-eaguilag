@@ -55,7 +55,7 @@ Para este ejercicio se ha utilizado Sakila, una base de datos de ejemplo que sim
 
 Esta base de datos contiene tablas como `film` (películas), `actor` (actores), `customer` (clientes), `rental` (alquileres), `category` (categorías), entre otras. Para ver la relación entre las diferentes tablas y sus atributos, podemos emplear el proceso de ingeniería inversa para obtener un diagrama de flujo:
 
-![Diagrama de BBDD Sakila](https://github.com/eaguilag/testing-git/blob/main/assets/diagrama-sakila.jpg)
+![Diagrama de BBDD Sakila](https://github.com/eaguilag/testing-git/blob/main/assets/diagrama-sakila.JPG)
 
 ## HORA DE CONSULTAR
 
