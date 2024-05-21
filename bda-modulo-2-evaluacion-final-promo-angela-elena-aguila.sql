@@ -1,6 +1,6 @@
 -- Evaluación Final Módulo 2
 
--- Para este ejerccio utilizaremos la BBDD Sakila
+-- Para este ejercicio utilizaremos la BBDD Sakila
 USE sakila;
 
 -- 1.
@@ -384,10 +384,10 @@ en las que han actuado juntos. */
 # table film_actor -> actor_id, film_id
 
 SELECT 
-a1.first_name AS actor1_first_name,
-a1.last_name AS actor1_last_name,
-a2.first_name AS actor2_first_name,
-a2.last_name AS actor2_last_name,
+a1.first_name AS first_name_actor1,
+a1.last_name AS last_name_actor1,
+a2.first_name AS first_name_actor2,
+a2.last_name AS last_name_actor2,
 COUNT(fa1.film_id) AS films -- contabilizo el numero de peliculas
 FROM film_actor AS fa1
 JOIN film_actor AS fa2 -- uno la tabla consigo misma para encontrar pares de actores/actrices
