@@ -10,11 +10,11 @@ Ejercicio de evaluación final del **Módulo 2** del Bootcamp de **Análisis de 
 
 ### Requisitos del Sistema
 
-- **Sistema Operativo**: Windows, macOS, Linux
+- **Sistema Operativo**: Windows, macOS o Linux
 
 - **Software**:
-  - MySQL Workbench 8.0+
-  - MySQL Server 8.0+
+  - MySQL Workbench
+  - MySQL Server
   - Sakila Database
 
 ###  Instalación de MySQL Workbench y MySQL Server
@@ -47,38 +47,36 @@ Ejercicio de evaluación final del **Módulo 2** del Bootcamp de **Análisis de 
 
 ## LA PUESTA A PUNTO
 
-Una vez instalado y configurado lo necesario, se recomienda tener una visión general de con qué base de datos se vaa trabajar:
+Una vez instalado y configurado lo necesario, se recomienda tener una visión general de los datos con los que se va a trabajar:
 
 ### Sakila Database:
 
-Para este ejercicio se ha utilizado Sakila, una base de datos de ejemplo que simula una tienda de alquiler de películas. Estas tablas contienen información sobre películas, actores, clientes, alquileres y más, y se utilizan para realizar consultas y análisis de datos en el contexto de una tienda de alquiler de películas.
-
-Esta base de datos contiene tablas como `film` (películas), `actor` (actores), `customer` (clientes), `rental` (alquileres), `category` (categorías), entre otras. Para ver la relación entre las diferentes tablas y sus atributos, podemos emplear el proceso de ingeniería inversa para obtener un diagrama de flujo:
+Para este ejercicio se ha utilizado Sakila, una base de datos de ejemplo que simula una tienda de alquiler de películas. Contiene tablas como `film` (películas), `actor` (actores), `customer` (clientes), `rental` (alquileres), `category` (categorías), entre otras. Para ver la relación entre las diferentes tablas, sus atributos, las `PRIMARY KEY`y las `FOREIGN KEY`, o los tipos de datos, podemos emplear el proceso de ingeniería inversa para obtener un diagrama de flujo:
 
 ![Diagrama de BBDD Sakila](https://github.com/eaguilag/testing-git/blob/main/assets/diagrama-sakila.JPG)
 
 ## HORA DE CONSULTAR
 
-Para realizar un análisis de los
+Las tablas de la base de datos Sakila contienen información sobre películas, actores, clientes, alquileres y más, y se utilizan para realizar consultas y análisis de datos en el contexto de una tienda de alquiler de películas.
 
 ### Objetivos
 
 Este proyecto tiene como próposito demostrar cómo realizar consultas SQL en la base de datos Sakila utilizando MySQL Workbench. Se marcan como objetivos:
 
-- Dominar las queries básicas: SELECT; UPDATE; DELETE; INSERT
-- Dominar las funciones `group by`, `where` y `having`.
-- Dominar el uso de joins (incluyendo `union` y `union all`)
+- Dominar las queries básicas: `SELECT`, `UPDATE`, `DELETE`, `INSERT`.
+- Dominar las funciones `GROUP BY`, `WHERE` y `HAVING`.
+- Dominar el uso de `JOIN` (incluyendo `UNION` y `UNION ALL`).
 - Dominar el uso de subconsultas.
-- Dominar el uso de las subconsultas correlacionadas
-- CTE’s
+- Dominar el uso de las subconsultas correlacionadas.
+- CTE’s.
 
 ### Pasos para ejecutar el fichero
 
-1. Abrir el archivo desde MySQL Workbench una vez estoy conectada al servido: File > Open SQL Script
+1. Una vez conectada a la base de datos en MySQL Workbench, ir a **File > Open SQL Script** y seleccionar el archivo de este repositorio previamente descargado.
 
-2. Asegurarse que tienes Sakila ejecutando `USE sakila`
+2. Asegurarse que estás usando el esquema Sakila ejecutando `USE sakila`.
 
-3. Seleccionar la consulta que quieres hacer y ejecutar la query para ver los resultados
+3. Seleccionar la consulta que quieres hacer y ejecutar el script para ver los resultados de la query.
 
 ## ENTENDIENDO EL FICHERO
 
@@ -86,17 +84,19 @@ El ejercicio de evaluación se encuentra en un SQL script dentro del repositorio
 
 - Enunciado del ejercicio de evaluación provisto por Adalab (como comentario).
 
-- Query correspondiente a cada enunciado del ejercicio. La query viene acompañada de comentarios cuando se considera necesario.
+- Query o consulta correspondiente a cada enunciado. La query viene acompañada de comentarios cuando se considera necesario o para mostrar que se tiene conocimiento de los métodos empleados.
 
-- Número de resultados devueltos por la consulta que, aunque no confirma directamente que la consulta es correcta, puede servir de guía para saber si está bien encaminada.
+- Número de resultados devueltos por la consulta que, aunque no confirma directamente que la consulta es correcta, puede servir de guía para saber si está bien encaminada a la hora de corregir.
 
     ```sql
-    -- 1.
-    /* Selecciona todos los nombres de las películas
-    sin que aparezcan duplicados. */
+    -- 1. Selecciona todos los nombres de las películas sin que aparezcan duplicados.
 
     SELECT DISTINCT title -- uso la clausula 'DISTINCT' para seleccionar varoles unicos
     FROM film
     ORDER BY title; -- organizo los resultados con la clausula 'ORDER BY' para visualizar los datos de manera efectiva
     -- 1000 rows returned
     ```
+
+## INSTRUCTORA DEL MÓDULO
+
+Agradecimientos por la impartición del módulo y la evaluación a cargo de la instructora Almu Hernández @almuher

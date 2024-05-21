@@ -1,15 +1,15 @@
--- Evaluación Final Módulo 2
+-- Evaluacion Final Modulo 2
 
 -- Para este ejercicio utilizaremos la BBDD Sakila
 USE sakila;
 
 -- 1.
-/* Selecciona todos los nombres de las películas
-sin que aparezcan duplicados. */
+/* Selecciona todos los nombres de las
+peliculas sin que aparezcan duplicados. */
 
 SELECT DISTINCT title -- uso la clausula 'DISTINCT' para seleccionar varoles unicos
 FROM film
-ORDER BY title; -- organizo los resultados con la clausula 'ORDER BY' para visualizar los datos de manera efectiva
+ORDER BY title; -- organizo los resultados con la clausula 'ORDER BY' para visualizar los datos de manera ordenada
 -- 1000 rows returned
 
 -- 2.
@@ -23,9 +23,9 @@ ORDER BY title;
 -- 223 rows returned
 
 -- 3.
-/* Encuentra el título y la descripción de todas
-las películas que contengan la palabra "amazing"
-en su descripción. */
+/* Encuentra el titulo y la descripcion de todas
+las peliculas que contengan la palabra "amazing"
+en su descripcion. */
 
 SELECT
 title,
@@ -36,8 +36,8 @@ ORDER BY title;
 -- 48 rows returned
 
 -- 4.
-/* Encuentra el título de todas las películas que
-tengan una duración mayor a 120 minutos. */
+/* Encuentra el titulo de todas las peliculas que
+tengan una duracion mayor a 120 minutos. */
 
 SELECT title
 FROM film
@@ -48,7 +48,7 @@ ORDER BY title;
 -- 5.
 /* Recupera los nombres de todos los actores. */
 
-SELECT DISTINCT -- uso 'DISTINCT' ya que un actor se repite
+SELECT DISTINCT -- uso 'DISTINCT', ya que un actor se repite
 first_name AS nombre, -- renombro las columnas con la palabra clave 'AS' para una mejor legibilidad
 last_name AS apellido
 FROM actor
@@ -78,8 +78,8 @@ WHERE actor_id BETWEEN 10 AND 20; -- establezco condicion 'WHERE' usando 'BETWEE
 -- 11 rows returned
 
 -- 8.
-/* Encuentra el título de las películas en la tabla film
-que no sean ni "R" ni "PG-13" en cuanto a su clasificación. */
+/* Encuentra el titulo de las peliculas en la tabla film
+que no sean ni "R" ni "PG-13" en cuanto a su clasificacion. */
 
 SELECT title
 FROM film
@@ -88,8 +88,8 @@ ORDER BY title;
 -- 582 rows returned
 
 -- 9.
-/* Encuentra la cantidad total de películas en cada clasificación
-de la tabla film y muestra la clasificación junto con el recuento. */
+/* Encuentra la cantidad total de peliculas en cada clasificacion
+de la tabla film y muestra la clasificacion junto con el recuento. */
 
 SELECT
 rating,
@@ -99,9 +99,9 @@ GROUP BY rating; -- organizo los resultados de cada clasificacion con 'GROUP BY'
 -- 5 rows returned
 
 -- 10.
-/* Encuentra la cantidad total de películas alquiladas
+/* Encuentra la cantidad total de peliculas alquiladas
 por cada cliente y muestra el ID del cliente, su nombre y
-apellido junto con la cantidad de películas alquiladas. */
+apellido junto con la cantidad de peliculas alquiladas. */
 
 SELECT
 customer.customer_id,
@@ -117,8 +117,8 @@ customer.last_name;
 -- 599 rows returned
 
 -- 11.
-/* Encuentra la cantidad total de películas alquiladas por categoría y
-muestra el nombre de la categoría junto con el recuento de alquileres. */
+/* Encuentra la cantidad total de peliculas alquiladas por categoria y
+muestra el nombre de la categoria junto con el recuento de alquileres. */
 
 SELECT category.name, (-- ahora empiezo una subconosulta para el recuento de alquileres:
 	SELECT COUNT(*)
@@ -134,7 +134,7 @@ FROM category;
 -- o usando 'CTE' para separar el conteo de alquileres (y poder reutilizarlo si fuese necesario) de la consulta principal
 WITH category_rental_count AS (
     SELECT film_category.category_id,
-    COUNT(*) AS rented_films -- funcion agregadaa 'COUNT' para hacer el conteo de alquileres
+    COUNT(*) AS rented_films -- funcion agregada 'COUNT' para hacer el conteo de alquileres
     FROM rental
     JOIN inventory
     ON rental.inventory_id = inventory.inventory_id
@@ -142,17 +142,17 @@ WITH category_rental_count AS (
     ON inventory.film_id = film_category.film_id
     GROUP BY film_category.category_id
 )
-SELECT category.name, -- consulta principal donde muestro el nombre de la categoría y su conteo de alquileres correspondiente
+SELECT category.name, -- consulta principal donde muestro el nombre de la categoria y su conteo de alquileres correspondiente
 category_rental_count.rented_films
 FROM category
 JOIN category_rental_count
 ON category.category_id = category_rental_count.category_id
 ORDER BY category.name;
--- aunque sea mas extenso, las CTE's ofrecen mejor organización y legibilidad a la hora de estructurar consultas largas
+-- aunque sea mas extenso, las CTE's ofrecen mejor organizacion y legibilidad a la hora de estructurar consultas complejas
 
 -- 12.
-/* Encuentra el promedio de duración de las películas para cada clasificación
-de la tabla film y muestra la clasificación junto con el promedio de duración. */
+/* Encuentra el promedio de duracion de las peliculas para cada clasificacion
+de la tabla film y muestra la clasificacion junto con el promedio de duracion. */
 
 SELECT rating,
 AVG(length) AS avg_length -- uso la funcion agregada 'AVG' para calcular el valor medio de la columna 'length' (duracion)
@@ -162,7 +162,7 @@ GROUP BY rating; -- lo agrupo por 'rating' (clasificacion) para organizar los re
 
 -- 13.
 /* Encuentra el nombre y apellido de los actores que
-aparecen en la película con title "Indian Love". */
+aparecen en la pelicula con title "Indian Love". */
 
 SELECT
 actor.first_name,
@@ -179,8 +179,8 @@ ORDER BY actor.last_name;
 -- 10 rows returned
 
 -- 14.
-/* Muestra el título de todas las películas que contengan
-la palabra "dog" o "cat" en su descripción. */
+/* Muestra el titulo de todas las peliculas que contengan
+la palabra "dog" o "cat" en su descripcion. */
 
 SELECT title
 FROM film
@@ -191,11 +191,11 @@ OR description LIKE '%dog%'; -- con el operador logico 'OR' puedo añadir una se
 -- o usando regexp
 SELECT title
 FROM film
-WHERE description REGEXP 'cat|dog'; -- la barra vertical equivale a 'OR'
+WHERE description REGEXP 'cat|dog'; -- la barra vertical equivale a 'OR' en las expresiones regulares
 -- 167 rows returned
 
 -- 15.
-/* Hay algún actor o actriz que no apareca en ninguna película en la tabla film_actor. */
+/* Hay algun actor o actriz que no apareca en ninguna pelicula en la tabla film_actor. */
 
 -- OPCION 1. Compruebo si hay algun/a actor/actriz registrado pero que no tenga ninguna pelicula asignada
 SELECT
@@ -209,7 +209,7 @@ WHERE actor.actor_id IN ( -- subconsulta
     WHERE film_id IS NULL); -- compruebo si hay algun/a actor/actriz cuyo id de pelicula sea nulo con 'IS NULL'
 -- 0 rows returned -> Todos los actores/actrices aparecen en alguna pelicula
 
--- OPCION 2. Compruebo si hay algun/a actor/actriz en la tabla 'actor' que no esté en la tabla 'film_actor'
+-- OPCION 2. Compruebo si hay algun/a actor/actriz en la tabla 'actor' que no este en la tabla film_actor
 SELECT
 a.actor_id,
 a.first_name,
@@ -222,7 +222,7 @@ WHERE NOT EXISTS ( -- el operado 'NOT EXISTS' nos devuelve los resultados no inc
 -- 0 rows returned -> Todos los actores/actrices aparecen en alguna pelicula
 
 -- 16.
-/* Encuentra el título de todas las películas que fueron lanzadas entre el año 2005 y 2010. */
+/* Encuentra el titulo de todas las peliculas que fueron lanzadas entre el anio 2005 y 2010. */
 
 SELECT DISTINCT title
 FROM film
@@ -231,20 +231,20 @@ WHERE release_year BETWEEN 2005 AND 2010; -- con la clausula BETWEEN selecciono 
 -- Todas las peliculas son de 2006
 
 -- 17.
-/* Encuentra el título de todas las películas que son de la misma categoría que "Family". */
+/* Encuentra el título de todas las películas que son de la misma categoria que "Family". */
 
 SELECT DISTINCT title
 FROM film
 JOIN film_category
 ON film.film_id = film_category.film_id
-WHERE film_category.category_id = ( -- obtengo la 'category_id' y en la subconsulta busco las coincidencias de peliculas de la categoria 'Family'
+WHERE film_category.category_id = ( -- obtengo la category_id y en la subconsulta busco las coincidencias de peliculas de la categoria 'Family'
 	SELECT category.category_id
 	FROM category
 	WHERE category.name = 'Family');
 -- 69 rows returned
 
 -- 18.
-/* Muestra el nombre y apellido de los actores que aparecen en más de 10 películas. */
+/* Muestra el nombre y apellido de los actores que aparecen en mas de 10 películas. */
 
 -- uso queries avanzadas como 'GROUP BY' y 'HAVING'
 SELECT DISTINCT actor.first_name,
@@ -257,8 +257,8 @@ HAVING COUNT(film_actor.film_id) > 10 -- sentencia 'HAVING' para filtrar el grup
 ORDER BY actor.last_name;
 
 -- 19.
-/* Encuentra el título de todas las películas que son "R" y
-tienen una duración mayor a 2 horas en la tabla film. */
+/* Encuentra el titulo de todas las peliculas que son "R" y
+tienen una duracion mayor a 2 horas en la tabla film. */
 
 SELECT title
 FROM film
@@ -267,30 +267,23 @@ AND length > 120; -- con el operador logico 'AND' indico que se han de cumplir l
 -- 90 rows returned
 
 -- 20.
-/* Encuentra las categorías de películas que tienen un promedio de duración superior
-a 120 minutos y muestra el nombre de la categoría junto con el promedio de duración. */
+/* Encuentra las categorias de peliculas que tienen un promedio de duracion superior
+a 120 minutos y muestra el nombre de la categoria junto con el promedio de duracion. */
 
--- uso CTE para hacer la consulta mas clara, separando el promedio de duracion de la consulta principal
-WITH category_avg_length AS (
-    SELECT category.name,
-    AVG(film.length) AS avg_length -- calculo el promedio de duracion
-    FROM category
-    JOIN film_category
-    ON category.category_id = film_category.category_id
-    JOIN film 
-    ON film_category.film_id = film.film_id
-    GROUP BY category.name -- agrupo los resultados por categorias
-)
-SELECT name,
-avg_length
-FROM category_avg_length
-WHERE avg_length > 120 -- filtro con condicion 'WHERE'
-ORDER BY name;
+SELECT category.name,
+AVG(film.length) AS avg_length -- calculo el promedio de duracion
+FROM category
+JOIN film_category
+ON category.category_id = film_category.category_id
+JOIN film 
+ON film_category.film_id = film.film_id
+GROUP BY category.name -- agrupo los resultados por categorias
+HAVING avg_length > 120; -- filtro con condicion 'WHERE'
 -- 4 rows returned
 
 -- 21.
-/* Encuentra los actores que han actuado en al menos 5 películas y muestra el
-nombre del actor junto con la cantidad de películas en las que han actuado. */
+/* Encuentra los actores que han actuado en al menos 5 pelIculas y muestra el
+nombre del actor junto con la cantidad de peliculas en las que han actuado. */
 
 -- consulta similar a la n. 18.
 -- uso CTE para hacer la consulta mas clara, separando el conteo de peliculas de la consulta principal
@@ -316,9 +309,9 @@ ORDER BY last_name;
 -- 200 rows returned
 
 -- 22.
-/* Encuentra el título de todas las películas que fueron alquiladas por más de 5 días.
-Utiliza una subconsulta para encontrar los rental_ids con una duración superior a 5 días
-y luego selecciona las películas correspondientes. */
+/* Encuentra el titulo de todas las películas que fueron alquiladas por mas de 5 días.
+Utiliza una subconsulta para encontrar los rental_ids con una duracion superior a 5 dias
+y luego selecciona las peliculas correspondientes. */
 
 SELECT DISTINCT film.title
 FROM film
@@ -333,9 +326,9 @@ ON inventory.inventory_id = rental_5_days.inventory_id;
 -- 955 rows returned
 
 -- 23.
-/* Encuentra el nombre y apellido de los actores que no han actuado en ninguna película de
-la categoría "Horror". Utiliza una subconsulta para encontrar los actores que han actuado
-en películas de la categoría "Horror" y luego exclúyelos de la lista de actores. */
+/* Encuentra el nombre y apellido de los actores que no han actuado en ninguna pelicula de
+la categoria "Horror". Utiliza una subconsulta para encontrar los actores que han actuado
+en peliculas de la categoria "Horror" y luego excluyelos de la lista de actores. */
 
 SELECT
 actor.first_name,
@@ -358,8 +351,8 @@ ORDER BY actor.last_name;
 -- BONUS
 
 -- 24.
-/* BONUS: Encuentra el título de las películas que son comedias y
-tienen una duración mayor a 180 minutos en la tabla film. */
+/* BONUS: Encuentra el titulo de las peliculas que son comedias y
+tienen una duracion mayor a 180 minutos en la tabla film. */
 
 -- usando subconsultas correlacionadas
 SELECT title
@@ -376,8 +369,8 @@ AND length > 180; -- segundo filtro de duracion
 -- 3 rows returned
 
 -- 25.
-/* BONUS: Encuentra todos los actores que han actuado juntos en al menos una película.
-La consulta debe mostrar el nombre y apellido de los actores y el número de películas
+/* BONUS: Encuentra todos los actores que han actuado juntos en al menos una pelicula.
+La consulta debe mostrar el nombre y apellido de los actores y el numero de peliculas
 en las que han actuado juntos. */
 
 # table actor -> first_name, last_name, actor_id
